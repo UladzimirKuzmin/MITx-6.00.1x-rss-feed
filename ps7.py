@@ -188,7 +188,24 @@ def makeTrigger(triggerMap, triggerType, params, name):
 
     Returns a new instance of a trigger (ex: TitleTrigger, AndTrigger).
     """
-    # TODO: Problem 11
+    if triggerType == 'WORD':
+        triggerMap[name] = WordTrigger(params[0])
+    elif triggerType == 'TITLE':
+        triggerMap[name] = TitleTrigger(params[0])
+    elif triggerType == 'SUBJECT':
+        triggerMap[name] = SubjectTrigger(params[0])
+    elif triggerType == 'SUMMARY':
+        triggerMap[name] = SummaryTrigger(params[0])
+    elif triggerType == 'NOT':
+        triggerMap[name] = NotTrigger(triggerMap[params[0]])
+    elif triggerType == 'AND':
+        triggerMap[name] = AndTrigger(triggerMap[params[0]], triggerMap[params[1]])
+    elif triggerType == 'OR':
+        triggerMap[name] = OrTrigger(triggerMap[params[0]], triggerMap[params[1]])
+    elif triggerType == 'PHRASE':
+        triggerMap[name] = PhraseTrigger(' '.join(params))
+
+    return triggerMap[name]
 
 
 def readTriggerConfig(filename):
@@ -220,8 +237,7 @@ def readTriggerConfig(filename):
 
         # Making a new trigger
         if linesplit[0] != "ADD":
-            trigger = makeTrigger(triggerMap, linesplit[1],
-                                  linesplit[2:], linesplit[0])
+            trigger = makeTrigger(triggerMap, linesplit[1], linesplit[2:], linesplit[0])
 
         # Add the triggers to the list
         else:
@@ -244,11 +260,11 @@ def main_thread(master):
         t2 = SubjectTrigger("Romney")
         t3 = PhraseTrigger("Election")
         t4 = OrTrigger(t2, t3)
-        triggerlist = [t1, t4]
+        #triggerlist = [t1, t4]
         
         # TODO: Problem 11
         # After implementing makeTrigger, uncomment the line below:
-        # triggerlist = readTriggerConfig("triggers.txt")
+        triggerlist = readTriggerConfig("triggers.txt")
 
         # **** from here down is about drawing ****
         frame = Frame(master)
