@@ -125,9 +125,6 @@ class SummaryTrigger(WordTrigger):
         return self.isWordIn(story.getSummary())
 
 
-# Composite Triggers
-# Problems 6-8
-
 class NotTrigger(Trigger):
     def __init__(self, trig):
         self.trig = trig
@@ -154,9 +151,6 @@ class OrTrigger(Trigger):
         return self.trig1.evaluate(story) or self.trig2.evaluate(story)
 
 
-# Phrase Trigger
-# Question 9
-
 class PhraseTrigger(Trigger):
     def __init__(self, phrase):
         self.phrase = phrase
@@ -165,20 +159,14 @@ class PhraseTrigger(Trigger):
         return self.phrase in story.getTitle() or self.phrase in story.getSubject() or self.phrase in story.getSummary()
 
 
-#======================
-# Part 3
-# Filtering
-#======================
-
 def filterStories(stories, triggerlist):
-    """
-    Takes in a list of NewsStory instances.
+    result = []
+    for story in stories:
+        for trigger in triggerlist:
+            if trigger.evaluate(story) and story not in result:
+                result.append(story)
 
-    Returns: a list of only the stories for which a trigger in triggerlist fires.
-    """
-    # TODO: Problem 10
-    # This is a placeholder (we're just returning all the stories, with no filtering) 
-    return stories
+    return result
 
 #======================
 # Part 4
