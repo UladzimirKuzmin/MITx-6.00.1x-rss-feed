@@ -128,9 +128,30 @@ class SummaryTrigger(WordTrigger):
 # Composite Triggers
 # Problems 6-8
 
-# TODO: NotTrigger
-# TODO: AndTrigger
-# TODO: OrTrigger
+class NotTrigger(Trigger):
+    def __init__(self, trig):
+        self.trig = trig
+
+    def evaluate(self, story):
+        return not self.trig.evaluate(story)
+
+
+class AndTrigger(Trigger):
+    def __init__(self, trig1, trig2):
+        self.trig1 = trig1
+        self.trig2 = trig2
+
+    def evaluate(self, story):
+        return self.trig1.evaluate(story) and self.trig2.evaluate(story)
+
+
+class OrTrigger(Trigger):
+    def __init__(self, trig1, trig2):
+        self.trig1 = trig1
+        self.trig2 = trig2
+
+    def evaluate(self, story):
+        return self.trig1.evaluate(story) or self.trig2.evaluate(story)
 
 
 # Phrase Trigger
